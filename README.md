@@ -1,1 +1,1 @@
-# License Plate Game API
+# REST API for handling License Plate Game data.
