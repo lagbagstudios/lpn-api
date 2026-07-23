@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"lpnapi/router"
+	"net/http"
 )
 
 func main() {
-	fmt.Println("Hello, world!")
+	r := router.NewRouter()
+	http.ListenAndServe(":8080", r)
 }
