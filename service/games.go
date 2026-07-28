@@ -25,14 +25,13 @@ func (g *GameHandler) GetLPN(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Fetch from DB using code
-
 	code, err := strconv.Atoi(codeStr)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Code must be numeric: %s", err.Error()), http.StatusBadRequest)
 		return
 	}
 
+	// TODO: Fetch data from postgres db
 	responseData := model.Game{Code: code, LPN: 123}
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(responseData)
