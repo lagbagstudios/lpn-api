@@ -1,0 +1,7 @@
+.git
+.gitignore
+README.md
+tests.http
+dockerfile
+docker-compose.yml
+vendor

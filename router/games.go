@@ -6,9 +6,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func NewRouter() *mux.Router {
-	game := service.GameHandler{}
+func NewRouter(gameService *service.GameService) *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc("/game/{code}", game.GetLPN)
+	r.HandleFunc("/game/{code}", gameService.GetLPN)
 	return r
 }

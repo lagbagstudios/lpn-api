@@ -1,6 +1,6 @@
 package model
 
 type Game struct {
-	Code int `json:"code"`
-	LPN  int `json:"lpn"`
+	Code int16 `json:"code"`
+	LPN  int16 `json:"lpn"`
 }
