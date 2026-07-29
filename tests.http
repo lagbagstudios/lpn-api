@@ -12,4 +12,4 @@ Content-Type: application/json
 PUT http://localhost:8080/game/42
 Content-Type: application/json
 
-{"lpn": 1}
+{"lpn": 237}

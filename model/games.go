@@ -8,3 +8,7 @@ type Game struct {
 type CreateGameRequest struct {
 	Code int16 `json:"code"`
 }
+
+type UpdateLPNRequest struct {
+	LPN int16 `json:"lpn"`
+}

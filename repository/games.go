@@ -32,9 +32,9 @@ func (r *GameRepository) CreateGame(gameCode int16) model.Game {
 	return model.Game{Code: gameCode, LPN: lpn}
 }
 
-func (r *GameRepository) UpdateLPN(gameCode, lpn int16) int16 {
+func (r *GameRepository) UpdateLPN(game *model.Game) int16 {
 	var updatedLpn int16
-	err := r.DB.QueryRow(context.Background(), `update games set lpn=$2 where code=$1 returning lpn`, gameCode, lpn).Scan(&updatedLpn)
+	err := r.DB.QueryRow(context.Background(), `update games set lpn=$2 where code=$1 returning lpn`, game.Code, game.LPN).Scan(&updatedLpn)
 	if err != nil {
 		log.Printf("Error updating LPN: %s", err.Error())
 		return -1
