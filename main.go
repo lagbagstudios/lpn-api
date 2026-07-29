@@ -12,7 +12,8 @@ import (
 )
 
 func main() {
-	pool, err := pgxpool.New(context.Background(), "")
+	connectionString := "postgresql://lpnuser:lpnpassword@db:5432/lpn"
+	pool, err := pgxpool.New(context.Background(), connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}

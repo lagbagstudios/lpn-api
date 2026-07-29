@@ -1,1 +1,15 @@
-GET http://localhost:8080/game/123
+GET http://localhost:8080/game/42
+
+###
+
+POST http://localhost:8080/game
+Content-Type: application/json
+
+{"code": 42}
+
+###
+
+PUT http://localhost:8080/game/42
+Content-Type: application/json
+
+{"lpn": 1}
