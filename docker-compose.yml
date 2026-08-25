@@ -1,3 +1,4 @@
+version: '3'
 services:
   api:
     build:
@@ -16,10 +17,10 @@ services:
       POSTGRES_PASSWORD: lpnpassword
       POSTGRES_DB: lpn
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - lpndata:/var/lib/postgresql/data
     restart: unless-stopped
     ports:
       - "5432:5432"
 
 volumes:
-  pgdata:
+  lpndata:
