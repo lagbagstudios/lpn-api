@@ -9,8 +9,11 @@ import (
 
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "https://lpn.deiders.com")
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		if r.Header.Get("Origin") == "http://localhost:3000" {
+			w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+		} else {
+			w.Header().Set("Access-Control-Allow-Origin", "https://lpn.deiders.com")
+		}
 		w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
