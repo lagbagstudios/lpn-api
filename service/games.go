@@ -5,15 +5,12 @@ import (
 	"fmt"
 	"lpnapi/model"
 	"lpnapi/repository"
+	"math/rand"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 )
-
-type gameStore interface {
-	Get(code int) model.Game
-}
 
 type GameService struct {
 	Repo *repository.GameRepository
@@ -35,8 +32,8 @@ func (g *GameService) GetLPN(w http.ResponseWriter, r *http.Request) {
 	}
 	code := int16(code64)
 
-	lpn := g.Repo.FetchLPN(code)
-	if lpn < 0 {
+	lpn, err := g.Repo.FetchLPN(code)
+	if err != nil {
 		http.Error(w, "Game not found", http.StatusNotFound)
 		return
 	}
@@ -50,15 +47,12 @@ func (g *GameService) GetLPN(w http.ResponseWriter, r *http.Request) {
 }
 
 func (g *GameService) CreateGame(w http.ResponseWriter, r *http.Request) {
-	var request model.CreateGameRequest
-	err := json.NewDecoder(r.Body).Decode(&request)
-	if err != nil {
-		http.Error(w, `Invalid payload, expected type is {"code": int16}`, http.StatusBadRequest)
-	}
+	code := int16(rand.Intn(9999))
 
-	gameResponse := g.Repo.CreateGame(request.Code)
-	if gameResponse.Code < 0 {
-		http.Error(w, "Unexpected error creating new game", http.StatusInternalServerError)
+	gameResponse, err := g.Repo.CreateGame(code)
+	if err != nil {
+		errorMessage := fmt.Sprintf("Unexpected error creating new game: %s", err.Error())
+		http.Error(w, errorMessage, http.StatusInternalServerError)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -90,9 +84,10 @@ func (g *GameService) UpdateLPN(w http.ResponseWriter, r *http.Request) {
 	}
 	code := int16(code64)
 
-	gameResponse := g.Repo.UpdateLPN(&model.Game{Code: code, LPN: request.LPN})
-	if gameResponse < 0 {
-		http.Error(w, "Unexpected error updating LPN", http.StatusInternalServerError)
+	gameResponse, err := g.Repo.UpdateLPN(&model.Game{Code: code, LPN: request.LPN})
+	if err != nil {
+		errorMessage := fmt.Sprintf("Unexpected error updating LPN: %s", err.Error())
+		http.Error(w, errorMessage, http.StatusInternalServerError)
 	}
 
 	w.Header().Set("Content-Type", "application/json")

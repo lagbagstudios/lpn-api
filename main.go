@@ -2,18 +2,20 @@ package main
 
 import (
 	"context"
+	"github.com/jackc/pgx/v5/pgxpool"
+	_ "github.com/joho/godotenv/autoload"
 	"log"
 	"lpnapi/repository"
 	"lpnapi/router"
 	"lpnapi/service"
 	"net/http"
-
-	"github.com/jackc/pgx/v5/pgxpool"
+	"os"
 )
 
 func main() {
-	connectionString := "postgresql://lpnuser:lpnpassword@db:5432/lpn"
-	pool, err := pgxpool.New(context.Background(), connectionString)
+	log.Println("Starting server...")
+	dbUrl := os.Getenv("DB_URL")
+	pool, err := pgxpool.New(context.Background(), dbUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -22,5 +24,7 @@ func main() {
 	gameRepository := &repository.GameRepository{DB: pool}
 	gameService := &service.GameService{Repo: gameRepository}
 	r := router.NewRouter(gameService)
-	http.ListenAndServe(":8080", r)
+	if err := http.ListenAndServe(":8080", r); err != nil {
+		log.Fatal(err)
+	}
 }
